@@ -1,0 +1,32 @@
+# extensions
+require:
+  - rubocop
+
+Style/Documentation:
+  Enabled: false
+Layout/LineLength:
+  Max: 140
+Metrics/MethodLength:
+  Enabled: false
+Metrics/BlockLength:
+  IgnoredMethods: ['describe', 'context', 'draw']  
+
+# Cop files-to-ignore
+AllCops:
+  Exclude:
+    - Gemfile
+    - Rakefile
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - '.git/**/*'
+    - 'db/schema.rb'
+    - 'lib/tasks/*.rake'
+    - 'bin/*'
+    - 'config/environments/development.rb'
+    - 'config/environments/production.rb'
+    - 'spec/spec_helper.rb'
+    - 'spec/factories.rb'
+    - 'config/*'
+    - 'config/initializers/*'
+    - 'db/migrate/20240521032152_add_devise_to_authors.rb'
