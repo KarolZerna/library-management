@@ -13,7 +13,7 @@ module Api
         if @author.save
           render json: @author, status: :created
         else
-          render json: @author.errors, status: :bad_request
+          raise LibraryErrorHandler::ClientError.new(message: 'Failed to create author', errors: @author.errors.full_messages)
         end
       end
 
