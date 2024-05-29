@@ -3,7 +3,7 @@
 module LibraryErrorHandler
   class BaseError < StandardError
     attr_reader :errors, :original_error
-  
+
     def initialize(message: nil, errors: [], original_error: nil)
       super(message)
       @errors = errors
@@ -12,52 +12,56 @@ module LibraryErrorHandler
     end
 
     def http_status_code
-        :internal_server_error
+      :internal_server_error
     end
-  
+
     def original_error_formatted
-        original_error&.message.to_s
+      original_error&.message.to_s
     end
-  
+
+    # rubocop:disable Style/RedundantReturn
     def formatted_errors
       return errors if errors&.present?
       return [message] if message&.present?
-      end
-  
+    end
+    # rubocop:enable Style/RedundantReturn
+
     def to_response
       result = { errors: formatted_errors }
       result[:original_error] = original_error_formatted if original_error&.present?
       result
     end
   end
-  
+
   class SystemError < BaseError
   end
-  
+
   class ClientError < BaseError
     def http_status_code
       :bad_request
     end
 
+    # rubocop:disable Style/HashSyntax
     def formatted_errors
       errors.map do |error|
-        attribute, message = error.split(" ", 2)
+        attribute, message = error.split(' ', 2)
         { attribute: attribute.downcase, message: message }
       end
     end
+    # rubocop:enable Style/HashSyntax
 
     def to_response
       {
         errors: formatted_errors,
         errorCode: http_status_code,
-        errorMessage: message || "A client error occurred"
+        errorMessage: message || 'A client error occurred'
       }
     end
   end
-  
+
   class ArgumentError < ClientError
   end
-  
+
   class DataNotFound < BaseError
     def http_status_code
       :not_found

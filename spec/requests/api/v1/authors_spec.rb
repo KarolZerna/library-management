@@ -12,7 +12,8 @@ RSpec.describe 'Api::V1::Authors', type: :request do
         json = JSON.parse(response.body)
 
         expect(response).to have_http_status(:ok)
-        expect(json['name']).to eq(author.name)
+        expect(json['firstname']).to eq(author.firstname)
+        expect(json['lastname']).to eq(author.lastname)
       end
     end
 
@@ -35,7 +36,7 @@ RSpec.describe 'Api::V1::Authors', type: :request do
         json = JSON.parse(response.body)
 
         expect(response).to have_http_status(:created)
-        expect(json['name']).to eq(valid_payload[:name])
+        expect(json['firstname']).to eq(valid_payload[:firstname])
       end
     end
 
