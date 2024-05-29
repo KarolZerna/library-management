@@ -8,6 +8,7 @@ module Api
         render json: @authors
       end
 
+      # rubocop:disable Style/GuardClause
       def create
         @author = Author.new(author_params)
         if @author.save
@@ -16,6 +17,7 @@ module Api
           raise LibraryErrorHandler::ClientError.new(message: 'Failed to create author', errors: @author.errors.full_messages)
         end
       end
+      # rubocop:enable Style/GuardClause
 
       def show
         @author = Author.find(params[:id])
