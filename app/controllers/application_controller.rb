@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::API
   rescue_from StandardError, with: :internal_server_error
   rescue_from LibraryErrorHandler::BaseError, with: :handle_error
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
   protected
 

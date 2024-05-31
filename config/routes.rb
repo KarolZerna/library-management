@@ -10,8 +10,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  resources :users
-  get 'profile', to: 'users#profile'
+  resources :users, only: [:index, :show, :create]
 
   namespace :api do
     namespace :v1 do

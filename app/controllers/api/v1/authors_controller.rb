@@ -8,6 +8,11 @@ module Api
         render json: @authors
       end
 
+      def show
+        @author = Author.find(params[:id])
+        render json: @author
+      end
+
       # rubocop:disable Style/GuardClause
       def create
         @author = Author.new(author_params)
@@ -18,11 +23,6 @@ module Api
         end
       end
       # rubocop:enable Style/GuardClause
-
-      def show
-        @author = Author.find(params[:id])
-        render json: @author
-      end
 
       private
 
