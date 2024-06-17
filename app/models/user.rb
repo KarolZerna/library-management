@@ -13,6 +13,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  role                   :string           default("user")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -30,10 +31,22 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
+  validates :firstname, :lastname, presence: true
   validates :email, presence: true, uniqueness: true
 
   def jwt_payload
     super
   end
 
+  ROLES = %w[admin user].freeze
+
+  validates :role, inclusion: { in: ROLES }
+
+  def admin?
+    role == 'admin'
+  end
+
+  def user?
+    role == 'user'
+  end
 end

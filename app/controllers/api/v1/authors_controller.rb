@@ -3,6 +3,9 @@
 module Api
   module V1
     class AuthorsController < ApplicationController
+      before_action :authenticate_user!, only: [:create]
+      before_action :authorize_admin!, only: [:create]
+
       def index
         @authors = Author.all
         render json: @authors
@@ -28,6 +31,12 @@ module Api
 
       def author_params
         params.require(:author).permit(:firstname, :lastname)
+      end
+
+      def authorize_admin!
+        unless current_user&.admin?
+          render json: { error: 'Not Authorized' }, status: :unauthorized
+        end
       end
     end
   end
