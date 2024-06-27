@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  include Pagy::Backend
+  include PagyHelper
+
   rescue_from StandardError, with: :internal_server_error
   rescue_from LibraryErrorHandler::BaseError, with: :handle_error
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found

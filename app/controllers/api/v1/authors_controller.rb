@@ -3,12 +3,14 @@
 module Api
   module V1
     class AuthorsController < ApplicationController
+      include Pagy::Backend
+
       before_action :authenticate_user!, only: [:create]
       before_action :authorize_admin!, only: [:create]
 
       def index
-        @authors = Author.all
-        render json: @authors
+        @pagy, @authors = pagy(Author.all, items: page_size, page: page_number)
+        render json: AuthorBlueprint.render(@authors, root: :data, meta: pagination_metadata)
       end
 
       def show
@@ -33,11 +35,15 @@ module Api
         params.require(:author).permit(:firstname, :lastname)
       end
 
+      # rubocop:disable Style/GuardClause
+      # rubocop:disable Style/IfUnlessModifier
       def authorize_admin!
         unless current_user&.admin?
           render json: { error: 'Not Authorized' }, status: :unauthorized
         end
       end
+      # rubocop:enable Style/IfUnlessModifier
+      # rubocop:enable Style/GuardClause
     end
   end
 end

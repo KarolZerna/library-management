@@ -34,9 +34,11 @@ class User < ApplicationRecord
   validates :firstname, :lastname, presence: true
   validates :email, presence: true, uniqueness: true
 
+  # rubocop:disable Lint/UselessMethodDefinition
   def jwt_payload
     super
   end
+  # rubocop:enable Lint/UselessMethodDefinition
 
   ROLES = %w[admin user].freeze
 
