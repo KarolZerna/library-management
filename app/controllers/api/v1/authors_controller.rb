@@ -7,7 +7,6 @@ module Api
 
       before_action :authenticate_user!, only: [:create]
       before_action :authorize_admin!, only: [:create]
-      load_and_authorize_resource
 
       def index
         @pagy, @authors = pagy(Author.all, items: page_size, page: page_number)
