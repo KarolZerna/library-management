@@ -10,12 +10,12 @@ module Api
 
       def index
         @pagy, @authors = pagy(Author.all, items: page_size, page: page_number)
-        render json: AuthorBlueprint.render(@authors, root: :data, meta: pagination_metadata)
+        render json: AuthorBlueprint.render(@authors, view: :normal, root: :data, meta: pagination_metadata)
       end
 
       def show
-        @author = Author.find(params[:id])
-        render json: @author
+        author = Author.find(params[:id])
+        render json: AuthorBlueprint.render(author, view: :normal)
       end
 
       # rubocop:disable Style/GuardClause
